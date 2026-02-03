@@ -70,7 +70,12 @@
 <div class="box" id="passwordBox">
   <h2>🔒 Secret Page</h2>
   <p>Enter the password to continue 💕</p>
-  <input type="password" id="passwordInput" placeholder="Password">
+  <input
+  type="password"
+  id="passwordInput"
+  placeholder="Password"
+  onkeydown="if(event.key === 'Enter') checkPassword()"
+/>
   <br>
   <button onclick="checkPassword()">Enter 💖</button>
   <p id="error" style="color:red;"></p>
