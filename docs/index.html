@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>My Valentine 💖</title>
+  <title>Secret Valentine 💖</title>
 
   <style>
     body {
@@ -23,28 +23,22 @@
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
     }
-      <button onclick="music.play()" style="
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  padding: 6px 12px;
-  border-radius: 20px;
-  border: none;
-  background: #ff4d6d;
-  color: white;
-  font-size: 12px;
-">
-  🔊 Play music
-</button>
-
 
     h2 {
       color: #ff4d6d;
-      margin-bottom: 10px;
     }
 
     p {
       color: #333;
+      font-size: 16px;
+    }
+
+    input {
+      padding: 10px;
+      width: 80%;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
       font-size: 16px;
     }
 
@@ -55,16 +49,12 @@
       border-radius: 20px;
       font-size: 16px;
       cursor: pointer;
-    }
-
-    .yes {
       background: #ff4d6d;
       color: white;
     }
 
-    .no {
-      background: #aaa;
-      color: white;
+    .hidden {
+      display: none;
     }
   </style>
 </head>
@@ -76,10 +66,22 @@
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
+<!-- 🔐 Password Screen -->
+<div class="box" id="passwordBox">
+  <h2>🔒 Secret Page</h2>
+  <p>Enter the password to continue 💕</p>
+  <input type="password" id="passwordInput" placeholder="Password">
+  <br>
+  <button onclick="checkPassword()">Enter 💖</button>
+  <p id="error" style="color:red;"></p>
+</div>
 
-<div class="box" id="box"></div>
+<!-- 💘 Valentine Content -->
+<div class="box hidden" id="box"></div>
 
 <script>
+  const CORRECT_PASSWORD = "230325"; // 🔑 CHANGE THIS IF YOU WANT
+
   const box = document.getElementById("box");
   const music = document.getElementById("music");
 
@@ -92,35 +94,40 @@
     "🤖 ERROR: Wrong answer detected."
   ];
 
+  function checkPassword() {
+    const input = document.getElementById("passwordInput").value;
+    if (input === CORRECT_PASSWORD) {
+      document.getElementById("passwordBox").classList.add("hidden");
+      box.classList.remove("hidden");
+      showStart();
+    } else {
+      document.getElementById("error").innerText = "Wrong password 😢";
+    }
+  }
+
   function showStart() {
     box.innerHTML = `
       <h2>Hey my love 💕</h2>
       <p>Can I ask you something?</p>
-      <button class="yes" onclick="go1()">Yes 💖</button>
+      <button onclick="go1()">Yes 💖</button>
     `;
   }
 
-function go1() {
-  music.volume = 0.5; // softer
-  music.play().then(() => {
-    console.log("Music started");
-  }).catch(() => {
-    console.log("Autoplay blocked");
-  });
+  function go1() {
+    try { music.play(); } catch (e) {}
 
-  box.innerHTML = `
-    <h2>💗</h2>
-    <p>You make my days brighter just by being you.</p>
-    <button class="yes" onclick="go2()">Continue 💕</button>
-  `;
-}
-
+    box.innerHTML = `
+      <h2>💗</h2>
+      <p>You make my days brighter just by being you.</p>
+      <button onclick="go2()">Continue 💕</button>
+    `;
+  }
 
   function go2() {
     box.innerHTML = `
       <h2>✨</h2>
       <p>I really love having you in my life.</p>
-      <button class="yes" onclick="go3()">One more 💖</button>
+      <button onclick="go3()">One more 💖</button>
     `;
   }
 
@@ -128,8 +135,8 @@ function go1() {
     box.innerHTML = `
       <h2>💘</h2>
       <p>Will you be my Valentine?</p>
-      <button class="yes" onclick="yes()">Yes 💖</button>
-      <button class="no" onclick="no()">No 😢</button>
+      <button onclick="yes()">Yes 💖</button>
+      <button onclick="no()">No 😢</button>
     `;
   }
 
@@ -142,16 +149,14 @@ function go1() {
   }
 
   function no() {
-    const random =
-      funnyNoReplies[Math.floor(Math.random() * funnyNoReplies.length)];
-
+    const random = funnyNoReplies[Math.floor(Math.random() * funnyNoReplies.length)];
     box.innerHTML = `
       <h2>${random}</h2>
       <p>Wanna think about it again? 😌</p>
-      <button class="yes" onclick="go3()">Try again 💕</button>
+      <button onclick="go3()">Try again 💕</button>
     `;
   }
-
-  showStart();
 </script>
 
+</body>
+</html>
